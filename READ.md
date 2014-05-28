@@ -1,2 +1,0 @@
-Merethe Hansen
-Jaya Kasiraj
