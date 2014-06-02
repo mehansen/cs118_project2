@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#define INET6_ADDSTRLEN 46
+#define INET6_ADDSTRLEN 46	//this should be enough; may need to change
 
 // PURPOSE:	just run everything obviously
 // INPUT:	./client server_hostname server_port_number filename prob_loss prob_corruption
@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 		exit(0);
 	}
 
-	//put parameters into variables
+	//put parameters into variables for ease of reading
 	char* hostname = argv[1];
 	char* portno = argv[2];
 	char* filename = argv[3];
@@ -43,6 +43,7 @@ int main(int argc, char* argv[]) {
 		fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
 		exit(1);
 	}
+	//servinfo now contains address info
 
 	//iterate through servinfo and print the IPs
 	printf("IP addresses for %s:\n\n", argv[1]);
@@ -64,6 +65,21 @@ int main(int argc, char* argv[]) {
 		char ipstr[INET6_ADDSTRLEN];
 		inet_ntop(p->ai_family, addr, ipstr, sizeof ipstr);
 		printf("  %s: %s\n", ipver, ipstr);
+	}
+
+	//create a socket
+	int sockfd = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
+
+	//connect to the address and port designated
+	//connect() automatically binds socket to a random port and our IP
+	connect(sockfd, servinfo->ai_addr, servinfo->ai_addrlen);
+	//now we can use send() and recv() to send and receive
+
+	//test sending a message
+	char *my_message = "hello jaya >:D";
+	if(send(sockfd, my_message, strlen(my_message)+1, 0) < 0) {
+		perror("send failed");
+		return 0;
 	}
 
 	freeaddrinfo(servinfo);		//eventually have to free servinfo
