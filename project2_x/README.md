@@ -23,7 +23,7 @@ GO-BACK-N Notes
 	- Invocation from above: 
 			~ call send(), then first check to see if window is full (N unACK-ed packages) 
 				~If window not full, packet created and sent (& variables updated)
-				~If window full, sender returns data back to upper layer (upper layer would try again later or perhaps would buffer the data or have a sycnhoronization mechanism that allos the upper layer to call send() only when it's not full)
+				~If window full, sender returns data back to upper layer (upper layer would try again later or perhaps would buffer the data or have a synchronization mechanism that allows the upper layer to call send() only when it's not full)
 	- Receipt of an ACK: 
 			~ acknowledgement for a packet with sequence number n is a cumulative acknowledgment, i.e. an indication that all packets with a sequence number up to and including n have been correctly received at the receiver
 	- Timeout event: 
