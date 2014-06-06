@@ -1,5 +1,5 @@
 /*
-** talker.c -- a datagram "client" demo
+** client.c -- a datagram "client" demo
 */
 
 #include <stdio.h>
@@ -13,8 +13,10 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define SERVERPORT "4950"    // the port users will be connecting to
+#include "packet.h"
 
+// INPUT:   ./client server_hostname server_port_number filename prob_loss prob_corruption
+//          will be passed into argv
 int main(int argc, char *argv[])
 {
     //ARGUMENT PROCESSING
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_DGRAM;
 
-    if ((rv = getaddrinfo(argv[1], SERVERPORT, &hints, &servinfo)) != 0) {
+    if ((rv = getaddrinfo(argv[1], portno, &hints, &servinfo)) != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
         return 1;
     }
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
     for(p = servinfo; p != NULL; p = p->ai_next) {
         if ((sockfd = socket(p->ai_family, p->ai_socktype,
                 p->ai_protocol)) == -1) {
-            perror("talker: socket");
+            perror("client: socket");
             continue;
         }
 
@@ -57,20 +59,25 @@ int main(int argc, char *argv[])
     }
 
     if (p == NULL) {
-        fprintf(stderr, "talker: failed to bind socket\n");
+        fprintf(stderr, "client: failed to bind socket\n");
         return 2;
     }
 
-    char* my_message = "hello world";
-    if ((numbytes = sendto(sockfd, my_message, strlen(my_message), 0,
+    //create a request packet
+    struct packet req;
+    req.packtype = 0;
+    strcpy(req.message, filename);
+    req.length = sizeof (int) * 4 + strlen(filename) + 1;
+
+    if ((numbytes = sendto(sockfd, &req, req.length, 0,
              p->ai_addr, p->ai_addrlen)) == -1) {
-        perror("talker: sendto");
+        perror("client: sendto");
         exit(1);
     }
 
     freeaddrinfo(servinfo);
 
-    printf("talker: sent %d bytes to %s\n", numbytes, argv[1]);
+    printf("client: sent %d bytes to %s\n", numbytes, argv[1]);
     close(sockfd);
 
     return 0;
