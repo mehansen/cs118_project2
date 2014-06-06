@@ -61,8 +61,8 @@ int main(int argc, char *argv[])
         return 2;
     }
 
-    char* message = "hello world";
-    if ((numbytes = sendto(sockfd, my_message, strlen(argv[2]), 0,
+    char* my_message = "hello world";
+    if ((numbytes = sendto(sockfd, my_message, strlen(my_message), 0,
              p->ai_addr, p->ai_addrlen)) == -1) {
         perror("talker: sendto");
         exit(1);
