@@ -36,5 +36,5 @@ GO-BACK-N Notes
 	- in all other cases, receiver discards packet and resends an ACK for the most recently received in-order packet (note: since packets are delivered one at a time to upper layer, if packet k has been received & delivered, then all packets with a sequence number lower than k have also been delivered)
 * receivers don't need to buffer out of order packets because, if packet n is lost, both packet n and packet n + 1 will eventually be retransmitted
 	=> receiver only needs to maintain sequence number of the next-in-order package
-	=> sender must maintain upper and lower bounds of its window and the position of the next sequuence number within this qindow
+	=> sender must maintain upper and lower bounds of its window and the position of the next sequence number within this window
 *  summary of techniques in GBN protocol: sequence numbers, cumulative acknowledgements, checksums, and a timeout/retransmit operation
