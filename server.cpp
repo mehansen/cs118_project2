@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <netdb.h>
 
-//#define MYPORT "3530"
 #define BACKLOG 5
 
 // PURPOSE:	just run everything obviously
@@ -55,7 +54,7 @@ int main(int argc, char* argv[]) {
 	}
 	free(servinfo);
 	while(1) {
-		//listen(sockfd, BACKLOG);
+		listen(sockfd, BACKLOG);
 
 		//accept()
 		//store the incoming socket address
