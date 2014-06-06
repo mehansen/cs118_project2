@@ -2,9 +2,10 @@
 
 struct packet
 {
+  int packtype; //1: ACK, 2: request, 3: data, 4: FIN
   int ack_no;
   int seq_no;
   int length;
-  char data[DATA_SIZE];
+  char message[DATA_SIZE];
   
 };
