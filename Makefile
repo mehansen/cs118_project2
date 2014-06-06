@@ -12,3 +12,4 @@ client: client.o
 
 clean:
 	rm -rf *o client server
+	killall -9 server
