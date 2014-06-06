@@ -46,6 +46,7 @@ int main(int argc, char* argv[]) {
 	//servinfo now contains address info
 
 	//create socket and listen()
+	//we're now listening
 	int sockfd = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
 
 	if(bind(sockfd, servinfo->ai_addr, servinfo->ai_addrlen) < 0) {
@@ -53,16 +54,19 @@ int main(int argc, char* argv[]) {
 		return (0);
 	}
 	free(servinfo);
-	listen(sockfd, BACKLOG);
+	while(1) {
+		listen(sockfd, BACKLOG);
 
-	//accept()
-	struct sockaddr_storage inc_addr;
-	socklen_t addr_size = sizeof (inc_addr);
-	int new_fd = accept(sockfd, (struct sockaddr *)&inc_addr, &addr_size);
+		//accept()
+		//store the incoming socket address
+		struct sockaddr_storage inc_addr;
+		socklen_t addr_size = sizeof (inc_addr);
+		int new_fd = accept(sockfd, (struct sockaddr *)&inc_addr, &addr_size);
 
-	char* msgbuff;
-	recv(new_fd, msgbuff, 10, 0);
-	printf("Message is: %s", msgbuff);
+		char* msgbuff;
+		if (recv(new_fd, msgbuff, 10, 0) >= 0)
+			printf("Message is: %s", msgbuff);
+	}
 }
 
 	//go back and put listen() in loop so that it only continues if no corruption
