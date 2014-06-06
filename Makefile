@@ -2,14 +2,13 @@ CC=gcc
 CFLAGS=-I.
 DEPS= header.h
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+all: server client
 
 server: server.o
-	$(CC) -o server server.o -I.
+	$(CC) server.cpp -o server
 
 client: client.o
-	$(CC) -o client client.o -I.
+	$(CC) client.cpp -o client
 
 clean:
 	rm -rf *o client server
