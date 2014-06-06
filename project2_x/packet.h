@@ -2,7 +2,7 @@
 
 struct packet
 {
-  int packtype; //1: ACK, 2: request, 3: data, 4: FIN
+  int packtype; //0: request, 1: ACK, 2: data, 3: FIN
   int ack_no;
   int seq_no;
   int length;
