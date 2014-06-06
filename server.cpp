@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <netdb.h>
 
-#define MYPORT "3535"
 #define BACKLOG 5
 
 // PURPOSE:	just run everything obviously
@@ -39,7 +38,7 @@ int main(int argc, char* argv[]) {
 	hints.ai_socktype = SOCK_DGRAM;
 	hints.ai_flags = AI_PASSIVE;
 
-	if((status = getaddrinfo(NULL, MYPORT, &hints, &servinfo)) != 0) {
+	if((status = getaddrinfo(NULL, portno, &hints, &servinfo)) != 0) {
 		fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
 		exit(1);
 	}
